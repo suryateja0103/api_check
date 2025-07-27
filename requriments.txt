@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+pydantic
+mysql-connector-python
+python-multipart
+aiofiles
+requests
+python-dotenv
