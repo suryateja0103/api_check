@@ -18,7 +18,7 @@ def connection():
         host=os.getenv("DB_HOST", "127.0.0.1"),
         port=int(os.getenv("DB_PORT", 3306)),
         user=os.getenv("DB_USER", "root"),
-        password=os.getenv("DB_PASSWORD", "your_password_here"),
+        password=os.getenv("DB_PASSWORD", "SURYAt@2005"),
         database=os.getenv("DB_NAME", "myapp")
     )
 
