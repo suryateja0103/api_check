@@ -2,23 +2,26 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import mysql.connector
 from mysql.connector import Error
-import uvicorn
+import os
+
 app = FastAPI()
 
 class User(BaseModel):
     name: str
     age: int
+
 class New_user(BaseModel):
     new_name: str
+
 def connection():
     return mysql.connector.connect(
-        host="127.0.0.1",
-        port=3306,
-        user="root",
-        password="SURYAt@2005",
-        database="myapp"
+        host=os.getenv("DB_HOST", "127.0.0.1"),
+        port=int(os.getenv("DB_PORT", 3306)),
+        user=os.getenv("DB_USER", "root"),
+        password=os.getenv("DB_PASSWORD", "your_password_here"),
+        database=os.getenv("DB_NAME", "myapp")
     )
-# 🏠 Home route
+
 @app.get("/")
 def home():
     return {"message": "Connected to FastAPI!"}
@@ -46,8 +49,6 @@ def user_data():
         if conn and conn.is_connected():
             conn.close()
 
-
-
 @app.post("/add-user")
 def add_user(user: User):
     try:
@@ -64,6 +65,7 @@ def add_user(user: User):
         if conn.is_connected():
             cur.close()
             conn.close()
+
 @app.put('/update-name/user_id={user_id}')
 def update_data(user_id: int, data: New_user):
     conn = None
@@ -102,9 +104,3 @@ def delete_user(user_id: int):
         if conn.is_connected():
             cur.close()
             conn.close()
-
-def main():
-    uvicorn.run("app:app", host="127.0.0.1", port=5001, reload=True)
-if __name__ == "__main__":
-    main()
-
